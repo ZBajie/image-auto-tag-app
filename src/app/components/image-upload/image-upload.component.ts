@@ -15,8 +15,16 @@ export class ImageUploadComponent {
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (!file) return;
+    if (!file.type.match('image.*')) {
+      this.fileName = 'Must be an image';
+      return;
+    }
+    if (file.size > 4000000) {
+      this.fileName = 'Max size is 4mb';
+      return;
+    }
+    this.fileName = file.name;
     const imgUrl = URL.createObjectURL(file);
     this.imageService.setImgSrc(imgUrl);
-    this.fileName = file.name;
   }
 }

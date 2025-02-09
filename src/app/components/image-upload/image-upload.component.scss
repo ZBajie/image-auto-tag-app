@@ -1,5 +1,4 @@
 @use "../../../styles/mixins/mixin";
-//@import "../../../styles/abstracts/_colors.scss";
 .image-upload-section {
   @include mixin.card-primary;
   .image-input {
