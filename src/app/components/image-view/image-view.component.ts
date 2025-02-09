@@ -1,24 +1,19 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { ImageDataService } from '../../services/image-data.service';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-image-view',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './image-view.component.html',
   styleUrl: './image-view.component.scss',
 })
 export class ImageViewComponent {
-  imgSrc$: string | null = null;
-  private subscription: Subscription;
+  imgSrc$: Observable<string | null>;
 
   constructor(private imageDataService: ImageDataService) {
-    this.subscription = this.imageDataService.imgSrc$.subscribe((imgSrc) => {
-      this.imgSrc$ = imgSrc;
-    });
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.imgSrc$ = this.imageDataService.imgSrc$;
   }
 }

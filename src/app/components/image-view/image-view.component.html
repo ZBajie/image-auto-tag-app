@@ -1,6 +1,6 @@
-@if (imgSrc$){
+@let imgSrc = imgSrc$ | async; @if (imgSrc) {
 <section class="image-view-section">
   <p>image-view works!</p>
-  <img class="image" [src]="imgSrc$" alt="Uploaded image" />
+  <img class="image" [src]="imgSrc" alt="Uploaded image" />
 </section>
 }
