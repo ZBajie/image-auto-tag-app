@@ -1,5 +1,28 @@
 # ImageAutoTagApp
 
+An app to auto-tag images.
+
+# Work Items Pending
+
+- Tensorflow auto tag app
+- Image download app
+- Manually add and edit tags app
+- Extract meta data from image
+
+# Work items in progress
+
+- Image uploading app
+- Image-auto-tag page
+- Image viewer app
+
+# Work Items Done
+
+- Initiated Git and added .gitignore
+- Included sass in filesystem
+- Route to image-auto-tag page
+
+## Angulars own setup notes
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.5.
 
 ## Development server
