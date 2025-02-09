@@ -1,0 +1,13 @@
+<section class="image-upload-section">
+  <p>image-upload works!</p>
+  <input
+    type="file"
+    class="image-input"
+    (change)="onFileSelected($event)"
+    #imageUpload
+  />
+  <div class="image-upload-custom">
+    {{ fileName || "No image uploaded" }}
+    <button (click)="imageUpload.click()">Upload</button>
+  </div>
+</section>

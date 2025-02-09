@@ -1,40 +1,18 @@
-@mixin button-base {
-  font-size: $font-size-secondary;
-  padding: $padding-primary;
-  background-color: var(--button-background-color-primary);
-  color: $button-color-primary;
-  box-shadow: 5px 5px 5px var(--box-shadow-color-primary);
-  border-radius: $border-radius-primary;
-  transition: all 1s;
-  &:hover {
-    cursor: pointer;
-    box-shadow: 15px 15px 15px $background-color-primary;
-  }
-  &:active {
-    background-color: var(--button-background-color-active);
-  }
-}
+@use "../abstracts/_fonts" as *;
+@use "../abstracts/_variables" as *;
+@use "../abstracts/colorsVariables" as *;
 
-@mixin button-secondary {
-  font-size: $font-size-tertiary;
-  margin: $margin-primary;
-  padding: $padding-primary;
-  background-color: $button-background-color-primary;
-  color: $button-color-primary;
-  border-radius: $border-radius-primary;
-}
-
-@mixin button-tertiary {
+@mixin button-primary {
   font-size: $font-size-primary;
   padding: $padding-primary;
   background-color: var(--button-background-color-primary);
-  color: $button-color-primary;
+  color: var(--button-color-primary);
   box-shadow: 5px 5px 5px var(--box-shadow-color-primary);
   border-radius: $border-radius-primary;
   transition: all 1s;
   &:hover {
     cursor: pointer;
-    box-shadow: 15px 15px 15px $background-color-primary;
+    box-shadow: 15px 15px 15px var(--background-color-primary);
   }
   &:active {
     background-color: var(--button-background-color-active);

@@ -1,0 +1,17 @@
+@use "../../../styles/mixins/mixin";
+//@import "../../../styles/abstracts/_colors.scss";
+.image-upload-section {
+  @include mixin.card-primary;
+  .image-input {
+    display: none;
+  }
+  .image-upload-custom {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    button {
+      @include mixin.button-primary;
+    }
+  }
+}
