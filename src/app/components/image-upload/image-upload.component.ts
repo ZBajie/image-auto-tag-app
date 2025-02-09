@@ -24,7 +24,12 @@ export class ImageUploadComponent {
       return;
     }
     this.fileName = file.name;
-    const imgUrl = URL.createObjectURL(file);
-    this.imageService.setImgSrc(imgUrl);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64DataUrl = reader.result as string;
+      this.imageService.setImgSrc(base64DataUrl);
+    };
+    reader.readAsDataURL(file);
   }
 }
