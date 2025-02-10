@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+@use "@angular/material" as mat;
 @use "styles/abstracts/_fonts" as *;
 @use "styles/abstracts/_variables" as *;
 @use "styles/abstracts/colorsVariables" as *;
 @use "styles/mixins/mixin" as *;
 @use "styles/base/base.scss";
+
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

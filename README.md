@@ -8,12 +8,12 @@ An app to auto-tag images.
 - Tensorflow auto tag app
 - Image download app
 - Manually add and edit tags app
-- Font awesome
 
 # Work items in progress
 
 - Image-auto-tag page
 - Extract meta data from image
+- angular material
 
 # Work Items Done
 

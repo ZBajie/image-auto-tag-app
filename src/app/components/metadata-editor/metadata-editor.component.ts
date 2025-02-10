@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { ImageDataService } from '../../services/image-data.service';
 import * as piexif from 'piexifjs';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-metadata-editor',
-  imports: [CommonModule],
+  imports: [CommonModule, MatSlideToggleModule, MatButtonModule, MatIconModule],
   templateUrl: './metadata-editor.component.html',
   styleUrl: './metadata-editor.component.scss',
 })
