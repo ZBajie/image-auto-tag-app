@@ -1,4 +1,13 @@
 <section class="metadata-editor-section">
   <p>metadata-editor works!</p>
-  <pre>{{ metadata | json }}</pre>
+
+  <button mat-raised-button color="primary" (click)="onUpdateXmpMetadata()">
+    Save Metadata
+  </button>
+  <p>second</p>
+  <button mat-raised-button color="primary" (click)="getXmpMetadata()">
+    read xmp Metadata
+  </button>
 </section>
+<pre>{{ xmpData | json }}</pre>
+<pre>{{ exifMetadata | json }}</pre>

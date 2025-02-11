@@ -2,31 +2,67 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { ImageDataService } from '../../services/image-data.service';
-import * as piexif from 'piexifjs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { ImageMetadataExifService } from '../../services/image-metadata-exif.service';
+import { ImageMetadataXmpService } from '../../services/image-metadata-xmp.service';
 
 @Component({
   selector: 'app-metadata-editor',
-  imports: [CommonModule, MatSlideToggleModule, MatButtonModule, MatIconModule],
+  imports: [
+    CommonModule,
+    MatSlideToggleModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+    MatInputModule,
+    FormsModule,
+  ],
   templateUrl: './metadata-editor.component.html',
   styleUrl: './metadata-editor.component.scss',
 })
 export class MetadataEditorComponent {
-  imgFile: string | null = null;
-  metadata: any = {};
   imgSrcSubscription: Subscription | null = null;
 
-  constructor(private imageDataService: ImageDataService) {}
+  imgFile: string | null = null;
+  exifMetadata: any = {};
+  xmpData: any = null;
+  thumbnailData = null;
+
+  newXmpData = {
+    'x:xmpmeta': {
+      $: { 'xmlns:x': 'adobe:ns:meta/' },
+      'rdf:RDF': {
+        'rdf:Description': {
+          $: {
+            'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
+          },
+          'dc:title': 'Updated Title',
+          'dc:creator': { 'rdf:Seq': { 'rdf:li': 'Jane Doe' } },
+          'dc:description': 'Updated description with debug check',
+          'dc:subject': { 'rdf:Bag': { 'rdf:li': ['tagA', 'tagB', 'tagC'] } },
+        },
+      },
+    },
+  };
+
+  constructor(
+    private imageDataService: ImageDataService,
+    private imageMetaExifService: ImageMetadataExifService,
+    private imageMetadataXmpService: ImageMetadataXmpService
+  ) {}
 
   ngOnInit() {
     this.imgSrcSubscription = this.imageDataService.imgSrc$.subscribe(
-      (imgSrc) => {
+      async (imgSrc) => {
         if (imgSrc) {
-          console.log('Received imgSrc:', imgSrc);
           this.imgFile = imgSrc;
-          this.readMetaData(imgSrc);
+          this.getExifMetadata(this.imgFile);
+          await this.getXmpMetadata();
         }
       }
     );
@@ -38,18 +74,46 @@ export class MetadataEditorComponent {
     }
   }
 
-  readMetaData(imageDataUrl: string) {
-    try {
-      console.log('Reading metadata from:', imageDataUrl);
+  getExifMetadata(imgSrc: string) {
+    this.exifMetadata = this.imageMetaExifService.readExifMetaData(imgSrc);
+  }
 
-      if (!imageDataUrl.startsWith('data:image/jpeg;base64,')) {
-        console.warn('Not a JPEG image. EXIF data may not be present.');
+  async getXmpMetadata() {
+    if (!this.imgFile) {
+      return;
+    }
+
+    try {
+      this.xmpData = await this.imageMetadataXmpService.readXmpMetaData(
+        this.imgFile
+      );
+
+      if (!this.xmpData) {
         return;
       }
-      this.metadata = piexif.load(imageDataUrl);
-      console.log('Extracted metadata:', this.metadata);
     } catch (error) {
-      console.error('Error reading metadata:', error);
+      console.error('Error reading XMP metadata:', error);
     }
+  }
+
+  async onUpdateXmpMetadata() {
+    if (!this.imgFile) {
+      return;
+    }
+
+    try {
+      this.imgFile = await this.imageMetadataXmpService.writeXmpMetadata(
+        this.imgFile,
+        this.newXmpData
+      );
+      alert('XMP Metadata Updated!');
+    } catch (error) {
+      console.error(' Error updating XMP metadata:', error);
+    }
+  }
+
+  saveMetadata() {
+    console.log('Updated Metadata:');
+    alert('Metadata saved! (Update logic needed to modify EXIF data)');
   }
 }
