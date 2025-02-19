@@ -1,4 +1,29 @@
 @use "../../../styles/mixins/mixin";
+@use "../../../styles/abstracts/_variables" as *;
 .metadata-editor-section {
   @include mixin.card-primary;
+  h2 {
+    margin-bottom: $margin-secondary;
+  }
+  button {
+    @include mixin.button-primary;
+  }
+  form {
+    @include mixin.form-primary;
+    .tag-item {
+      margin-bottom: $margin-primary;
+      display: flex;
+      flex-direction: row;
+      button {
+        margin-left: $margin-primary;
+      }
+    }
+  }
+  .button-container {
+    width: 100%;
+    margin-top: $margin-secondary;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }

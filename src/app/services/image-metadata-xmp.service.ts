@@ -5,19 +5,14 @@ import { XMLParser, XMLBuilder } from 'fast-xml-parser';
   providedIn: 'root',
 })
 export class ImageMetadataXmpService {
-  private parser: XMLParser;
-  private builder: XMLBuilder;
-
-  constructor() {
-    this.parser = new XMLParser({
-      ignoreAttributes: false,
-      attributeNamePrefix: '',
-    });
-    this.builder = new XMLBuilder({
-      ignoreAttributes: false,
-      attributeNamePrefix: '',
-    });
-  }
+  private parser = new XMLParser({
+    ignoreAttributes: false,
+    attributeNamePrefix: '',
+  });
+  private builder = new XMLBuilder({
+    ignoreAttributes: false,
+    attributeNamePrefix: '',
+  });
 
   readXmpMetaData(imageData: string) {
     if (!imageData) {
@@ -63,8 +58,13 @@ export class ImageMetadataXmpService {
       return imageData;
     }
 
-    const xmpStart = imageData.indexOf('<x:xmpmeta');
-    const xmpEnd = imageData.indexOf('</x:xmpmeta>') + '</x:xmpmeta>'.length;
+    let xmpStart = imageData.indexOf('<x:xmpmeta');
+    let xmpEnd = imageData.indexOf('</x:xmpmeta>') + '</x:xmpmeta>'.length;
+
+    if (xmpStart === -1 || xmpEnd === -1) {
+      xmpStart = imageData.indexOf('<xmpmeta');
+      xmpEnd = imageData.indexOf('</xmpmeta>') + '</xmpmeta>'.length;
+    }
 
     let newXmpXml = this.builder.build(newXmpData);
 

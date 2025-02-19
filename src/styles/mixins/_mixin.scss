@@ -36,3 +36,29 @@
   align-items: center;
   justify-content: center;
 }
+
+@mixin form-primary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: $margin-primary;
+
+    label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 8px;
+      border: 5px double var(--border-color-primary);
+      border-radius: $border-radius-primary;
+    }
+  }
+}

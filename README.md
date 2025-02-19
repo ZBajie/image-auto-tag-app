@@ -6,14 +6,13 @@ An app to auto-tag images.
 
 - Style
 - Tensorflow auto tag app
-- Image download app
 - Manually add and edit tags app
+- browser-image-compression
 
 # Work items in progress
 
 - Image-auto-tag page
-- Extract meta data from image
-- angular material
+- Image download app
 
 # Work Items Done
 
@@ -22,6 +21,9 @@ An app to auto-tag images.
 - Route to image-auto-tag page
 - Image uploading app
 - Image viewer app
+- angular material
+- Extract meta data from image
+- Manually edit XMP data
 
 ## Angulars own setup notes
 
