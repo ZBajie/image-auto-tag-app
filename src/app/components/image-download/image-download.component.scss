@@ -1,0 +1,5 @@
+@use "../../../styles/mixins/mixin";
+
+.image-download-section {
+  @include mixin.card-primary;
+}
