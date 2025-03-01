@@ -1,6 +1,6 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subscription } from 'rxjs';
+import { XMLBuilder, XMLParser } from 'fast-xml-parser';
 import { ImageDataService } from '../../services/image-data.service';
 import {
   FormArray,
@@ -19,78 +19,74 @@ import { ImageMetadataXmpService } from '../../services/image-metadata-xmp.servi
   templateUrl: './metadata-editor.component.html',
   styleUrl: './metadata-editor.component.scss',
 })
-export class MetadataEditorComponent implements OnInit, OnDestroy {
+export class MetadataEditorComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private imageDataService = inject(ImageDataService);
   private imageMetadataExifService = inject(ImageMetadataExifService);
   private imageMetadataXmpService = inject(ImageMetadataXmpService);
 
-  imgSrcSubscription: Subscription | null = null;
   xmpForm!: FormGroup;
-  imgFile: string | null = null;
+  imgFile: File | null = null;
+  xmpDataXml: string | null = null;
+  xmpDataJson: any = null;
   exifMetadata: any = {};
-  xmpData: any = null;
-  thumbnailData = null;
-
-  constructor() {}
 
   ngOnInit() {
+    this.imageDataService.imgSrc$.subscribe((file) => {
+      if (file) {
+        console.log('📸 New file received from ImageDataService:', file);
+        this.imgFile = file;
+        this.extractMetadata();
+      }
+    });
     this.xmpForm = this.formBuilder.group({
       title: ['', Validators.required],
       creator: ['', Validators.required],
       description: ['', Validators.required],
       tags: this.formBuilder.array([]),
     });
+  }
 
-    this.imgSrcSubscription = this.imageDataService.imgSrc$.subscribe(
-      async (imgSrc) => {
-        if (imgSrc) {
-          this.imgFile = imgSrc;
-          this.getExifMetadata(this.imgFile);
-          await this.getXmpMetadata();
-        }
-      }
+  getExifMetadata() {
+    if (!this.imgFile) return;
+    this.exifMetadata = this.imageMetadataExifService.readExifMetaData(
+      this.imgFile
     );
   }
 
-  ngOnDestroy() {
-    if (this.imgSrcSubscription) {
-      this.imgSrcSubscription.unsubscribe();
-    }
-  }
-
-  getExifMetadata(imgSrc: string) {
-    this.exifMetadata = this.imageMetadataExifService.readExifMetaData(imgSrc);
-  }
-
-  async getXmpMetadata() {
-    if (!this.imgFile) {
-      return;
-    }
+  async extractMetadata() {
+    if (!this.imgFile) return;
 
     try {
-      this.xmpData = await this.imageMetadataXmpService.readXmpMetaData(
+      const metadataXml = await this.imageMetadataXmpService.readXmpMetaData(
         this.imgFile
       );
-
-      if (!this.xmpData) {
+      if (!metadataXml) {
+        console.warn('XMP metadata is undefined or missing.');
         return;
       }
+
+      this.xmpDataXml = metadataXml;
+      console.log('Extracted XMP Metadata (XML):', metadataXml);
+
+      const parser = new XMLParser({ ignoreAttributes: false });
+      this.xmpDataJson = parser.parse(metadataXml);
+      console.log('Converted XMP Metadata (JSON):', this.xmpDataJson);
+
+      this.initFormData();
     } catch (error) {
-      console.error('Error reading XMP metadata:', error);
+      console.error('Error extracting XMP:', error);
     }
-    this.initFormData();
   }
 
   initFormData() {
-    if (!this.xmpData || !this.xmpData['xmpmeta']) {
-      console.warn('XMP metadata is undefined or missing.');
+    if (!this.xmpDataJson || !this.xmpDataJson['x:xmpmeta']) {
+      console.warn('XMP metadata is missing.');
       return;
     }
 
     const xmpDescription =
-      this.xmpData['xmpmeta']['rdf:RDF']['rdf:Description'];
-
+      this.xmpDataJson['x:xmpmeta']['rdf:RDF']['rdf:Description'];
     if (!xmpDescription) {
       console.warn('XMP description is missing.');
       return;
@@ -106,9 +102,7 @@ export class MetadataEditorComponent implements OnInit, OnDestroy {
     const tagList = xmpDescription['dc:subject']?.['rdf:Bag']?.['rdf:li'] || [];
 
     if (Array.isArray(tagList)) {
-      tagList.forEach((tag) => {
-        this.tags.push(this.formBuilder.control(tag));
-      });
+      tagList.forEach((tag) => this.tags.push(this.formBuilder.control(tag)));
     } else if (typeof tagList === 'string' && tagList.trim() !== '') {
       this.tags.push(this.formBuilder.control(tagList));
     }
@@ -162,19 +156,36 @@ export class MetadataEditorComponent implements OnInit, OnDestroy {
         },
       },
     };
-
-    try {
-      this.imgFile = await this.imageMetadataXmpService.writeXmpMetadata(
-        this.imgFile,
-        updatedXmpData
-      );
-      alert('XMP Metadata Updated!');
-    } catch (error) {
-      console.error('Error updating XMP metadata:', error);
-    }
+    const builder = new XMLBuilder({
+      ignoreAttributes: false,
+      format: true,
+    });
+    this.xmpDataJson = builder.build(updatedXmpData);
   }
 
-  saveMetadata() {
-    alert('Metadata saved! (Update logic needed to modify EXIF data)');
+  async saveMetadata() {
+    await this.onUpdateXmpMetadata();
+    await this.insertMetadata();
+  }
+
+  async insertMetadata() {
+    const file = this.imgFile;
+    if (!file) {
+      alert('Please select an image first.');
+      return;
+    }
+
+    try {
+      const newBlob = await this.imageMetadataXmpService.writeXmpMetadata(
+        file,
+        this.xmpDataJson
+      );
+      const newFile = new File([newBlob], file.name, { type: file.type });
+      this.imageDataService.setImgFile(newFile);
+
+      alert('XMP metadata inserted successfully!');
+    } catch (error) {
+      console.error('Error inserting XMP:', error);
+    }
   }
 }

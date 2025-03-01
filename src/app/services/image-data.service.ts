@@ -5,11 +5,22 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class ImageDataService {
-  private imgSrc = new BehaviorSubject<string | null>(null);
+  private imgFile = new BehaviorSubject<File | null>(null);
+  imgSrc$ = this.imgFile.asObservable();
 
-  imgSrc$ = this.imgSrc.asObservable();
+  setImgFile(file: File) {
+    this.imgFile.next(file);
+  }
 
-  setImgSrc(imgSrc: string) {
-    this.imgSrc.next(imgSrc);
+  downloadFile() {
+    const url = URL.createObjectURL(this.imgFile.getValue()!);
+    const fileName = this.imgFile.getValue()!.name;
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url); // Cleanup
   }
 }

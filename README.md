@@ -7,7 +7,8 @@ An app to auto-tag images.
 - Style
 - Tensorflow auto tag app
 - Manually add and edit tags app
-- browser-image-compression
+- browser-image-compression webP format
+- Read and remove EXIF data app
 
 # Work items in progress
 

@@ -2,4 +2,7 @@
 
 .image-download-section {
   @include mixin.card-primary;
+  button {
+    @include mixin.button-primary;
+  }
 }

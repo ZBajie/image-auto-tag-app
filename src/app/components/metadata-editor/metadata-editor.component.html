@@ -44,15 +44,17 @@
           <button type="button" (click)="removeTag(i)">Remove</button>
         </div>
       </div>
+    </div>
+    <div class="button-container">
       <button type="button" (click)="addTag()">Add Tag</button>
+      <button type="submit" [disabled]="xmpForm.invalid">Save</button>
     </div>
   </form>
-  <div class="button-container">
-    <button (click)="getXmpMetadata()">Read XMP</button>
-    <button (click)="onUpdateXmpMetadata()">Save XMP</button>
-  </div>
+  <!-- <div class="button-container">
+    <button (click)="extractMetadata()">Read XMP</button>
+    <button (click)="insertMetadata()">download image</button>
+  </div> -->
+  <!-- <button (click)="getExifMetadata()">Read EXIF</button> -->
 </section>
-<!-- <pre>{{ xmpData | json }}</pre> -->
+<!-- <pre>{{ xmpDataJson | json }}</pre> -->
 <!-- <pre>{{ exifMetadata | json }}</pre> -->
-<!-- Save Button -->
-<!-- <button type="submit" [disabled]="xmpForm.invalid">Save Metadata</button> -->

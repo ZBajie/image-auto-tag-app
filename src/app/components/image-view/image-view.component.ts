@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ImageDataService } from '../../services/image-data.service';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-image-view',
@@ -14,6 +14,8 @@ export class ImageViewComponent {
   imgSrc$: Observable<string | null>;
 
   constructor(private imageDataService: ImageDataService) {
-    this.imgSrc$ = this.imageDataService.imgSrc$;
+    this.imgSrc$ = this.imageDataService.imgSrc$.pipe(
+      map((file) => (file ? URL.createObjectURL(file) : null)) // Convert File to URL
+    );
   }
 }
