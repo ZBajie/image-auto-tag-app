@@ -34,7 +34,6 @@ export class MetadataEditorComponent implements OnInit {
   ngOnInit() {
     this.imageDataService.imgSrc$.subscribe((file) => {
       if (file) {
-        console.log('📸 New file received from ImageDataService:', file);
         this.imgFile = file;
         this.extractMetadata();
       }
@@ -67,11 +66,9 @@ export class MetadataEditorComponent implements OnInit {
       }
 
       this.xmpDataXml = metadataXml;
-      console.log('Extracted XMP Metadata (XML):', metadataXml);
 
       const parser = new XMLParser({ ignoreAttributes: false });
       this.xmpDataJson = parser.parse(metadataXml);
-      console.log('Converted XMP Metadata (JSON):', this.xmpDataJson);
 
       this.initFormData();
     } catch (error) {
@@ -118,10 +115,6 @@ export class MetadataEditorComponent implements OnInit {
 
   removeTag(index: number) {
     this.tags.removeAt(index);
-  }
-
-  onXmpFormSubmit() {
-    console.log('XMP Form Data:', this.xmpForm.value);
   }
 
   async onUpdateXmpMetadata() {

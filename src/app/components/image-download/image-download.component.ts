@@ -8,7 +8,16 @@ import { ImageDataService } from '../../services/image-data.service';
   styleUrl: './image-download.component.scss',
 })
 export class ImageDownloadComponent {
+  public imgFile: File | null = null;
   private imageDataService = inject(ImageDataService);
+
+  ngOnInit() {
+    this.imageDataService.imgSrc$.subscribe((file) => {
+      if (file) {
+        this.imgFile = file;
+      }
+    });
+  }
   onDownload() {
     this.imageDataService.downloadFile();
   }
