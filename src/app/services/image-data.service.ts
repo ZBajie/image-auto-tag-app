@@ -1,15 +1,33 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { TensorflowService } from './tensorflow.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ImageDataService {
   private imgFile = new BehaviorSubject<File | null>(null);
-  imgSrc$ = this.imgFile.asObservable();
+  private tensorflowMobilenetTags = new BehaviorSubject<string[]>([]);
 
+  imgSrc$ = this.imgFile.asObservable();
+  tensorflowMobilenetTags$ = this.tensorflowMobilenetTags.asObservable();
+
+  constructor(private tensorflowService: TensorflowService) {
+    this.imgSrc$.subscribe((file) => {
+      if (file) {
+        console.log('📸 New Image Detected, Running Classification...');
+        this.tensorflowService.getTensorflowMobilenetTags(file).then((tags) => {
+          this.setTensorflowMobilenetTags(tags);
+        });
+      }
+    });
+  }
   setImgFile(file: File) {
     this.imgFile.next(file);
+  }
+
+  setTensorflowMobilenetTags(tags: string[]) {
+    this.tensorflowMobilenetTags.next(tags);
   }
 
   downloadFile() {
