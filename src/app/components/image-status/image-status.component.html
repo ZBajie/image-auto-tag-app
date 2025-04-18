@@ -1,0 +1,29 @@
+<section class="image-status-section">
+  <h2>Image status</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Image</td>
+        @if (imgFile) {
+        <td>Selected</td>
+        } @else {
+        <td>Not selected</td>
+        }
+      </tr>
+      <tr>
+        <td>Metadata</td>
+        @if (metaData) {
+        <td>Selected</td>
+        } @else {
+        <td>Not selected</td>
+        }
+      </tr>
+    </tbody>
+  </table>
+</section>

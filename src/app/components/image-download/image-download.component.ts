@@ -21,4 +21,13 @@ export class ImageDownloadComponent {
   onDownload() {
     this.imageDataService.downloadFile();
   }
+  onDownloadZip() {
+    this.imageDataService.downloadZipFile();
+  }
+  onDownloadSingleRezized(width: number = 400) {
+    this.imageDataService.downloadSingleResized(width);
+  }
+  onDownloadSingleRezizedXmp(width: number = 400) {
+    this.imageDataService.downloadSingleResizedWithXmp(width);
+  }
 }

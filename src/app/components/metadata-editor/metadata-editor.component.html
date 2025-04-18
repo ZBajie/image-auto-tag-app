@@ -1,6 +1,6 @@
 @if (imgFile) {
 <section class="metadata-editor-section">
-  <h2>XMP Metadata Editor</h2>
+  <h2>Metadata editor</h2>
 
   <form [formGroup]="xmpForm" (ngSubmit)="saveMetadata()">
     <div class="form-group">
@@ -48,7 +48,7 @@
     </div>
     <div class="button-container">
       <button type="button" (click)="addTag()">Add Tag</button>
-      <button type="submit" [disabled]="xmpForm.invalid">Save</button>
+      <button type="submit" [disabled]="xmpForm.invalid">Save metadata</button>
     </div>
   </form>
   <!-- <div class="button-container">

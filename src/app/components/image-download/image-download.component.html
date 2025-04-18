@@ -1,6 +1,11 @@
 @if (imgFile) {
 <section class="image-download-section">
   <h2>Download image</h2>
-  <button (click)="onDownload()">Download</button>
+  <button (click)="onDownloadSingleRezizedXmp()">Download</button>
+  <button (click)="onDownloadZip()">Download zip</button>
+  <button (click)="onDownloadSingleRezized()">Download single resized</button>
+  <button (click)="onDownloadSingleRezizedXmp()">
+    Download single resized XMP
+  </button>
 </section>
 }

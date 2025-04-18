@@ -3,6 +3,7 @@ import { ImageUploadComponent } from '../../components/image-upload/image-upload
 import { ImageViewComponent } from '../../components/image-view/image-view.component';
 import { MetadataEditorComponent } from '../../components/metadata-editor/metadata-editor.component';
 import { ImageDownloadComponent } from '../../components/image-download/image-download.component';
+import { ImageStatusComponent } from '../../components/image-status/image-status.component';
 
 @Component({
   selector: 'app-image-auto-tag',
@@ -11,6 +12,7 @@ import { ImageDownloadComponent } from '../../components/image-download/image-do
     ImageViewComponent,
     MetadataEditorComponent,
     ImageDownloadComponent,
+    ImageStatusComponent,
   ],
   templateUrl: './image-auto-tag.component.html',
   styleUrl: './image-auto-tag.component.scss',

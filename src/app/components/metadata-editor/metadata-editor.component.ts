@@ -10,7 +10,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ImageMetadataExifService } from '../../services/image-metadata-exif.service';
-import { ImageMetadataXmpService } from '../../services/image-metadata-xmp.service';
+import { readXmpMetaData } from '../../utils/xmp-utils';
 
 @Component({
   standalone: true,
@@ -23,7 +23,6 @@ export class MetadataEditorComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private imageDataService = inject(ImageDataService);
   private imageMetadataExifService = inject(ImageMetadataExifService);
-  private imageMetadataXmpService = inject(ImageMetadataXmpService);
 
   xmpForm!: FormGroup;
   imgFile: File | null = null;
@@ -56,24 +55,15 @@ export class MetadataEditorComponent implements OnInit {
   async extractMetadata() {
     if (!this.imgFile) return;
 
-    try {
-      const metadataXml = await this.imageMetadataXmpService.readXmpMetaData(
-        this.imgFile
-      );
-      if (!metadataXml) {
-        console.warn('XMP metadata is undefined or missing.');
-        return;
-      }
+    this.imageDataService.xmpOriginal$.subscribe((xml) => {
+      if (!xml) return;
 
-      this.xmpDataXml = metadataXml;
-
+      this.xmpDataXml = xml;
       const parser = new XMLParser({ ignoreAttributes: false });
-      this.xmpDataJson = parser.parse(metadataXml);
+      this.xmpDataJson = parser.parse(xml);
 
       this.initFormData();
-    } catch (error) {
-      console.error('Error extracting XMP:', error);
-    }
+    });
   }
 
   initFormData() {
@@ -89,10 +79,30 @@ export class MetadataEditorComponent implements OnInit {
       return;
     }
 
+    const getLocalizedValue = (val: any) => {
+      if (typeof val === 'string') return val;
+      if (Array.isArray(val)) {
+        const defaultItem = val.find(
+          (item) => item?.['@_xml:lang'] === 'x-default'
+        );
+        return defaultItem?.['#text'] || '';
+      }
+      if (typeof val === 'object') {
+        return val['#text'] || '';
+      }
+      return '';
+    };
+
     this.xmpForm.patchValue({
-      title: xmpDescription['dc:title'] || '',
-      creator: xmpDescription['dc:creator']?.['rdf:Seq']?.['rdf:li'] || '',
-      description: xmpDescription['dc:description'] || '',
+      title: getLocalizedValue(
+        xmpDescription['dc:title']?.['rdf:Alt']?.['rdf:li']
+      ),
+      description: getLocalizedValue(
+        xmpDescription['dc:description']?.['rdf:Alt']?.['rdf:li']
+      ),
+      creator: getLocalizedValue(
+        xmpDescription['dc:creator']?.['rdf:Seq']?.['rdf:li']
+      ),
     });
 
     this.tags.clear();
@@ -117,68 +127,17 @@ export class MetadataEditorComponent implements OnInit {
     this.tags.removeAt(index);
   }
 
-  async onUpdateXmpMetadata() {
-    if (!this.imgFile) {
-      return;
-    }
+  saveMetadata() {
+    const metadata = {
+      title: this.xmpForm.value.title || 'Untitled',
+      description: this.xmpForm.value.description || '',
+      tags: this.tags.controls
+        .map((tagControl) => tagControl.value)
+        .filter((tag: string) => tag.trim() !== ''),
 
-    console.log(
-      'tags:',
-      this.tags.controls.map((tagControl) => tagControl.value)
-    );
-
-    const updatedXmpData = {
-      'x:xmpmeta': {
-        $: { 'xmlns:x': 'adobe:ns:meta/' },
-        'rdf:RDF': {
-          'rdf:Description': {
-            $: { 'xmlns:dc': 'http://purl.org/dc/elements/1.1/' },
-            'dc:title': this.xmpForm.value.title,
-            'dc:creator': {
-              'rdf:Seq': { 'rdf:li': this.xmpForm.value.creator },
-            },
-            'dc:description': this.xmpForm.value.description,
-            'dc:subject': {
-              'rdf:Bag': {
-                'rdf:li': this.tags.controls
-                  .map((tagControl) => tagControl.value)
-                  .filter((tag: string) => tag.trim() !== ''),
-              },
-            },
-          },
-        },
-      },
+      creator: this.xmpForm.value.creator || 'Anonymous',
+      generatedAt: new Date().toISOString(),
     };
-    const builder = new XMLBuilder({
-      ignoreAttributes: false,
-      format: true,
-    });
-    this.xmpDataJson = builder.build(updatedXmpData);
-  }
-
-  async saveMetadata() {
-    await this.onUpdateXmpMetadata();
-    await this.insertMetadata();
-  }
-
-  async insertMetadata() {
-    const file = this.imgFile;
-    if (!file) {
-      alert('Please select an image first.');
-      return;
-    }
-
-    try {
-      const newBlob = await this.imageMetadataXmpService.writeXmpMetadata(
-        file,
-        this.xmpDataJson
-      );
-      const newFile = new File([newBlob], file.name, { type: file.type });
-      this.imageDataService.setImgFile(newFile);
-
-      alert('XMP metadata inserted successfully!');
-    } catch (error) {
-      console.error('Error inserting XMP:', error);
-    }
+    this.imageDataService.setMetaData(metadata);
   }
 }

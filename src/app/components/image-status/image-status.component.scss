@@ -1,0 +1,9 @@
+@use "../../../styles/mixins/mixin";
+@use "../../../styles/abstracts/_variables" as *;
+
+.image-status-section {
+  @include mixin.card-primary;
+  button {
+    @include mixin.button-primary;
+  }
+}

@@ -1,7 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { ImageDataService } from '../../services/image-data.service';
-import { ImageMetadataXmpService } from '../../services/image-metadata-xmp.service';
-import { ImageMetadataExifService } from '../../services/image-metadata-exif.service';
+import { readXmpMetaData } from '../../utils/xmp-utils';
+import { readExifMetaData } from '../../utils/exif-utils';
+import { ExifDict } from 'piexifjs';
 
 @Component({
   selector: 'app-image-upload',
@@ -10,12 +11,11 @@ import { ImageMetadataExifService } from '../../services/image-metadata-exif.ser
 })
 export class ImageUploadComponent {
   private imageDataService = inject(ImageDataService);
-  private imageMetadataExifService = inject(ImageMetadataExifService);
-  private imageMetadataXmpService = inject(ImageMetadataXmpService);
 
-  fileName = '';
-  selectedFile: File | null = null;
-  extractedMetadata: string | null = null;
+  public fileName = '';
+  public selectedFile: File | null = null;
+  private extractedMetadataXmp: string | null = null;
+  private extractedMetadataExif: ExifDict | null = null;
 
   async onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
@@ -35,8 +35,15 @@ export class ImageUploadComponent {
       this.fileName = file.name;
       this.selectedFile = file;
 
-      this.extractedMetadata =
-        await this.imageMetadataXmpService.readXmpMetaData(file);
+      this.extractedMetadataXmp = await readXmpMetaData(file);
+      if (this.extractedMetadataXmp) {
+        this.imageDataService.setXmpOriginal(this.extractedMetadataXmp);
+      }
+
+      this.extractedMetadataExif = await readExifMetaData(file);
+      if (this.extractedMetadataExif) {
+        this.imageDataService.setExifOriginal(this.extractedMetadataExif);
+      }
 
       this.imageDataService.setImgFile(file);
     }
