@@ -22,7 +22,6 @@ import { readXmpMetaData } from '../../utils/xmp-utils';
 export class MetadataEditorComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private imageDataService = inject(ImageDataService);
-  private imageMetadataExifService = inject(ImageMetadataExifService);
 
   xmpForm!: FormGroup;
   imgFile: File | null = null;
@@ -43,13 +42,9 @@ export class MetadataEditorComponent implements OnInit {
       description: ['', Validators.required],
       tags: this.formBuilder.array([]),
     });
-  }
-
-  getExifMetadata() {
-    if (!this.imgFile) return;
-    this.exifMetadata = this.imageMetadataExifService.readExifMetaData(
-      this.imgFile
-    );
+    this.xmpForm.valueChanges.subscribe(() => {
+      this.imageDataService.setMetadataFormSaved(false);
+    });
   }
 
   async extractMetadata() {
@@ -139,5 +134,6 @@ export class MetadataEditorComponent implements OnInit {
       generatedAt: new Date().toISOString(),
     };
     this.imageDataService.setMetaData(metadata);
+    this.imageDataService.setMetadataFormSaved(true);
   }
 }

@@ -18,16 +18,22 @@ export class ImageDownloadComponent {
       }
     });
   }
-  onDownload() {
-    this.imageDataService.downloadFile();
-  }
+
   onDownloadZip() {
-    this.imageDataService.downloadZipFile();
+    if (this.imageDataService.getMetadataFormSaved()) {
+      this.imageDataService.downloadZipFile();
+    } else {
+      alert('Please save metadata first.');
+    }
   }
   onDownloadSingleRezized(width: number = 400) {
     this.imageDataService.downloadSingleResized(width);
   }
   onDownloadSingleRezizedXmp(width: number = 400) {
-    this.imageDataService.downloadSingleResizedWithXmp(width);
+    if (this.imageDataService.getMetadataFormSaved()) {
+      this.imageDataService.downloadSingleResizedWithXmp(width);
+    } else {
+      alert('Please save metadata first.');
+    }
   }
 }

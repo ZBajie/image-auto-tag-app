@@ -13,12 +13,14 @@ export class ImageDataService {
   private xmpOriginal = new BehaviorSubject<string | null>(null);
   private exifOriginal = new BehaviorSubject<ExifDict | null>(null);
   private metaData = new BehaviorSubject<ImageMetadata | null>(null);
+  private metadataFormSaved = new BehaviorSubject<boolean>(true);
   private tensorflowMobilenetTags = new BehaviorSubject<string[]>([]);
 
   imgSrc$ = this.imgFile.asObservable();
   xmpOriginal$ = this.xmpOriginal.asObservable();
   exifOriginal$ = this.exifOriginal.asObservable();
   metaData$ = this.metaData.asObservable();
+  metadataFormSaved$ = this.metadataFormSaved.asObservable();
   tensorflowMobilenetTags$ = this.tensorflowMobilenetTags.asObservable();
 
   constructor(private tensorflowService: TensorflowService) {
@@ -50,23 +52,21 @@ export class ImageDataService {
   setMetaData(data: ImageMetadata) {
     this.metaData.next(data);
   }
-  downloadFile() {
-    const url = URL.createObjectURL(this.imgFile.getValue()!);
-    const fileName = this.imgFile.getValue()!.name;
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+
+  setMetadataFormSaved(saved: boolean) {
+    this.metadataFormSaved.next(saved);
+  }
+
+  getMetadataFormSaved(): boolean {
+    return this.metadataFormSaved.getValue();
   }
 
   async downloadZipFile() {
     const file = this.imgFile.getValue();
+    const metadata = this.metaData.getValue();
 
-    if (!file) {
-      alert('No image selected.');
+    if (!file || !metadata) {
+      alert('No image or metadata found.');
       return;
     }
 
@@ -74,17 +74,17 @@ export class ImageDataService {
 
     const originalFilename = file.name;
     const defaultTitle = originalFilename.split('.')[0];
-    const safeTitle =
-      this.metaData.value?.title ||
-      defaultTitle
-        .toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^\w\-]/g, '');
+    const safeTitle = metadata.title
+      ? metadata.title
+          .toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^\w\-]/g, '')
+      : defaultTitle;
 
     const sizes = [400, 800, 1600];
     const zip = new JSZip();
 
-    zip.file('metadata.json', JSON.stringify(this.metaData.value, null, 2));
+    zip.file('metadata.json', JSON.stringify(metadata, null, 2));
 
     for (const width of sizes) {
       const canvas = document.createElement('canvas');
@@ -148,6 +148,7 @@ export class ImageDataService {
 
   async downloadSingleResized(width: number) {
     const file = this.imgFile.getValue();
+    const metadata = this.metaData.getValue();
 
     if (!file) {
       alert('No image selected.');
@@ -158,12 +159,12 @@ export class ImageDataService {
 
     const originalFilename = file.name;
     const defaultTitle = originalFilename.split('.')[0];
-    const safeTitle =
-      this.metaData.value?.title ||
-      defaultTitle
-        .toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^\w\-]/g, '');
+    const safeTitle = metadata?.title
+      ? metadata.title
+          .toLowerCase()
+          .replace(/\s+/g, '-')
+          .replace(/[^\w\-]/g, '')
+      : defaultTitle;
 
     const fileName = `${safeTitle}-${width}.jpg`;
 
