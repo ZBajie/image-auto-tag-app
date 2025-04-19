@@ -29,7 +29,7 @@ export class ImageDownloadComponent {
   onDownloadSingleRezized(width: number = 400) {
     this.imageDataService.downloadSingleResized(width);
   }
-  onDownloadSingleRezizedXmp(width: number = 400) {
+  onDownloadSingleRezizedXmp(width: number = 1600) {
     if (this.imageDataService.getMetadataFormSaved()) {
       this.imageDataService.downloadSingleResizedWithXmp(width);
     } else {

@@ -10,6 +10,7 @@ import { ExifDict } from 'piexifjs';
 })
 export class ImageDataService {
   private imgFile = new BehaviorSubject<File | null>(null);
+  private imageUrl = new BehaviorSubject<string | null>(null);
   private xmpOriginal = new BehaviorSubject<string | null>(null);
   private exifOriginal = new BehaviorSubject<ExifDict | null>(null);
   private metaData = new BehaviorSubject<ImageMetadata | null>(null);
@@ -17,6 +18,7 @@ export class ImageDataService {
   private tensorflowMobilenetTags = new BehaviorSubject<string[]>([]);
 
   imgSrc$ = this.imgFile.asObservable();
+  imageUrl$ = this.imageUrl.asObservable();
   xmpOriginal$ = this.xmpOriginal.asObservable();
   exifOriginal$ = this.exifOriginal.asObservable();
   metaData$ = this.metaData.asObservable();
@@ -33,8 +35,15 @@ export class ImageDataService {
       }
     });
   }
+
   setImgFile(file: File) {
     this.imgFile.next(file);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imageUrl.next(reader.result as string);
+    };
+    reader.readAsDataURL(file);
   }
 
   setXmpOriginal(xmp: string) {

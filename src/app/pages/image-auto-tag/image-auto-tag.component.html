@@ -1,5 +1,16 @@
-<app-image-upload />
-<app-image-download />
-<app-image-status />
-<app-image-view />
-<app-metadata-editor />
+<div
+  class="background-wrapper"
+  [ngStyle]="{
+    'background-image': imageUrl
+      ? 'url(' + imageUrl + ')'
+      : 'url(/autotag-default-1600.jpg)'
+  }"
+></div>
+<!-- 'url(/public/autotag-default-1600.jpg)' -->
+<div class="page-content">
+  <app-image-upload />
+  <app-image-download />
+  <app-image-status />
+  <app-image-view />
+  <app-metadata-editor />
+</div>
