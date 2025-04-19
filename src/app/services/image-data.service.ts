@@ -24,14 +24,14 @@ export class ImageDataService {
   tensorflowMobilenetTags$ = this.tensorflowMobilenetTags.asObservable();
 
   constructor(private tensorflowService: TensorflowService) {
-    /* this.imgSrc$.subscribe((file) => {
+    this.imgSrc$.subscribe((file) => {
       if (file) {
         console.log('📸 New Image Detected, Running Classification...');
         this.tensorflowService.getTensorflowMobilenetTags(file).then((tags) => {
           this.setTensorflowMobilenetTags(tags);
         });
       }
-    }); */
+    });
   }
   setImgFile(file: File) {
     this.imgFile.next(file);

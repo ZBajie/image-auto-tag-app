@@ -9,8 +9,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { ImageMetadataExifService } from '../../services/image-metadata-exif.service';
-import { readXmpMetaData } from '../../utils/xmp-utils';
+import { TensorflowService } from '../../services/tensorflow.service';
 
 @Component({
   standalone: true,
@@ -22,6 +21,7 @@ import { readXmpMetaData } from '../../utils/xmp-utils';
 export class MetadataEditorComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private imageDataService = inject(ImageDataService);
+  private tensorFlowService = inject(TensorflowService);
 
   xmpForm!: FormGroup;
   imgFile: File | null = null;
@@ -122,6 +122,21 @@ export class MetadataEditorComponent implements OnInit {
     this.tags.removeAt(index);
   }
 
+  async autoTagImage() {
+    if (!this.imgFile) return;
+    const tags = await this.tensorFlowService.getTensorflowMobilenetTags(
+      this.imgFile
+    );
+    const existingTags = this.tags.controls.map((item) =>
+      item.value.toLowerCase()
+    );
+    tags.forEach((tag) => {
+      if (!existingTags.includes(tag.toLowerCase())) {
+        this.tags.push(this.formBuilder.control(tag));
+      }
+    });
+  }
+
   saveMetadata() {
     const metadata = {
       title: this.xmpForm.value.title || 'Untitled',
@@ -130,7 +145,7 @@ export class MetadataEditorComponent implements OnInit {
         .map((tagControl) => tagControl.value)
         .filter((tag: string) => tag.trim() !== ''),
 
-      creator: this.xmpForm.value.creator || 'Anonymous',
+      creator: this.xmpForm.value.creator || '',
       generatedAt: new Date().toISOString(),
     };
     this.imageDataService.setMetaData(metadata);
