@@ -4,8 +4,8 @@ import { ImageUploadComponent } from '../../components/image-upload/image-upload
 import { ImageViewComponent } from '../../components/image-view/image-view.component';
 import { MetadataEditorComponent } from '../../components/metadata-editor/metadata-editor.component';
 import { ImageDownloadComponent } from '../../components/image-download/image-download.component';
-import { ImageStatusComponent } from '../../components/image-status/image-status.component';
 import { ImageDataService } from '../../services/image-data.service';
+import { TitleComponent } from '../../components/title/title.component';
 
 @Component({
   selector: 'app-image-auto-tag',
@@ -15,7 +15,7 @@ import { ImageDataService } from '../../services/image-data.service';
     ImageViewComponent,
     MetadataEditorComponent,
     ImageDownloadComponent,
-    ImageStatusComponent,
+    TitleComponent,
   ],
   templateUrl: './image-auto-tag.component.html',
   styleUrl: './image-auto-tag.component.scss',

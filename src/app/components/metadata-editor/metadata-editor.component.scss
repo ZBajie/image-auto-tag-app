@@ -1,13 +1,15 @@
 @use "../../../styles/mixins/mixin";
 @use "../../../styles/abstracts/_variables" as *;
 .metadata-editor-section {
-  @include mixin.card-primary;
+  /*  @include mixin.card-primary;
+  background-color: aquamarine; */
   h2 {
     margin-bottom: $margin-secondary;
   }
   button {
     @include mixin.button-primary;
     margin-right: $margin-primary;
+    background-color: rgb(118, 46, 166);
   }
   form {
     @include mixin.form-primary;

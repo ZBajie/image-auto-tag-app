@@ -1,3 +1,6 @@
+@use "../../../styles/mixins/mixin";
+@use "../../../styles/abstracts/_variables" as *;
+
 .background-wrapper {
   position: fixed;
   top: 0;
@@ -14,5 +17,35 @@
 .page-content {
   position: relative;
   z-index: 1;
-  overflow-y: auto; /* Allow vertical scrolling */
+  min-height: 100vh;
+  overflow-y: auto;
+  .header {
+    margin-top: 100px;
+    padding: $padding-secondary;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .main {
+    padding: $padding-secondary;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}
+
+@media screen and (max-width: 850px) {
+  .page-content {
+    .header {
+      margin-top: 0px;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+    .main {
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+    }
+  }
 }

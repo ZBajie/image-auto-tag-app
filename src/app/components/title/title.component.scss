@@ -1,0 +1,48 @@
+.arc-text {
+  display: flex;
+  justify-content: center;
+  font-size: 5rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  animation: wobble 4s ease-in-out infinite alternate;
+  --total: 10;
+
+  span {
+    display: inline-block;
+    transform-origin: bottom center;
+    color: hsl(calc((var(--i) / var(--total)) * 360), 100%, 50%);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+
+    &:nth-child(odd) {
+      transform: rotate(-8deg);
+    }
+
+    &:nth-child(even) {
+      transform: rotate(8deg);
+    }
+  }
+}
+
+@keyframes wobble {
+  0% {
+    transform: rotate(-20deg);
+  }
+  100% {
+    transform: rotate(20deg);
+  }
+}
+@media screen and (max-width: 850px) {
+  .arc-text {
+    font-size: 3rem;
+    letter-spacing: 0.05em;
+    animation: keyWobble 4s ease-in-out infinite alternate;
+  }
+}
+@keyframes keyWobble {
+  0% {
+    transform: rotate(-5deg);
+  }
+  100% {
+    transform: rotate(20deg);
+  }
+}

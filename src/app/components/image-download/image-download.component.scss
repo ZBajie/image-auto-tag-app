@@ -1,8 +1,11 @@
 @use "../../../styles/mixins/mixin";
 
 .image-download-section {
-  @include mixin.card-primary;
+  /*  @include mixin.card-primary; */
+  transform-origin: bottom center;
+  transform: rotate(8deg);
   button {
-    @include mixin.button-primary;
+    @include mixin.button-round;
+    background-color: purple;
   }
 }

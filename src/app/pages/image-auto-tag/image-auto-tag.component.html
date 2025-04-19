@@ -6,11 +6,14 @@
       : 'url(/autotag-default-1600.jpg)'
   }"
 ></div>
-<!-- 'url(/public/autotag-default-1600.jpg)' -->
 <div class="page-content">
-  <app-image-upload />
-  <app-image-download />
-  <app-image-status />
-  <app-image-view />
-  <app-metadata-editor />
+  <header class="header">
+    <app-image-upload />
+    <app-title />
+    <app-image-download />
+  </header>
+  <div class="main">
+    <app-metadata-editor />
+    <app-image-view />
+  </div>
 </div>
