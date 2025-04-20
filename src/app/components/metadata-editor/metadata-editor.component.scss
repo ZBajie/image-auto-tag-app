@@ -11,6 +11,9 @@
     margin-right: $margin-primary;
     background-color: rgb(118, 46, 166);
   }
+  .button-save {
+    background-color: red;
+  }
   form {
     @include mixin.form-primary;
     .tag-item {
@@ -20,6 +23,18 @@
       button {
         margin-left: $margin-primary;
       }
+    }
+    label {
+      background-color: rgba($color: #ffffff, $alpha: 0.5);
+      padding: $padding-primary;
+      border-radius: $border-radius-primary;
+    }
+    .title-required {
+      color: white;
+      background-color: red;
+      padding: $padding-primary;
+      margin-left: $margin-secondary;
+      border-radius: $border-radius-primary;
     }
   }
   .button-container {

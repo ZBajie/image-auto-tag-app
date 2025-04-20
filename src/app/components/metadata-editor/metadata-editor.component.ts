@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { XMLBuilder, XMLParser } from 'fast-xml-parser';
+import { XMLParser } from 'fast-xml-parser';
 import { ImageDataService } from '../../services/image-data.service';
 import {
   FormArray,
@@ -19,6 +19,7 @@ import { TensorflowService } from '../../services/tensorflow.service';
   styleUrl: './metadata-editor.component.scss',
 })
 export class MetadataEditorComponent implements OnInit {
+  public formSaved = true;
   private formBuilder = inject(FormBuilder);
   private imageDataService = inject(ImageDataService);
   private tensorFlowService = inject(TensorflowService);
@@ -38,12 +39,13 @@ export class MetadataEditorComponent implements OnInit {
     });
     this.xmpForm = this.formBuilder.group({
       title: ['', Validators.required],
-      creator: ['', Validators.required],
-      description: ['', Validators.required],
+      creator: [''],
+      description: [''],
       tags: this.formBuilder.array([]),
     });
     this.xmpForm.valueChanges.subscribe(() => {
       this.imageDataService.setMetadataFormSaved(false);
+      this.formSaved = false;
     });
   }
 
@@ -138,6 +140,10 @@ export class MetadataEditorComponent implements OnInit {
   }
 
   saveMetadata() {
+    if (this.xmpForm.invalid) {
+      this.xmpForm.markAllAsTouched();
+      return;
+    }
     const metadata = {
       title: this.xmpForm.value.title || 'Untitled',
       description: this.xmpForm.value.description || '',
@@ -150,5 +156,6 @@ export class MetadataEditorComponent implements OnInit {
     };
     this.imageDataService.setMetaData(metadata);
     this.imageDataService.setMetadataFormSaved(true);
+    this.formSaved = true;
   }
 }

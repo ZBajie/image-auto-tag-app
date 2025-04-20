@@ -15,7 +15,7 @@ export class ImageDataService {
   private exifOriginal = new BehaviorSubject<ExifDict | null>(null);
   private metaData = new BehaviorSubject<ImageMetadata | null>(null);
   private metadataFormSaved = new BehaviorSubject<boolean>(true);
-  private tensorflowMobilenetTags = new BehaviorSubject<string[]>([]);
+  /* private tensorflowMobilenetTags = new BehaviorSubject<string[]>([]); */
 
   imgSrc$ = this.imgFile.asObservable();
   imageUrl$ = this.imageUrl.asObservable();
@@ -23,9 +23,9 @@ export class ImageDataService {
   exifOriginal$ = this.exifOriginal.asObservable();
   metaData$ = this.metaData.asObservable();
   metadataFormSaved$ = this.metadataFormSaved.asObservable();
-  tensorflowMobilenetTags$ = this.tensorflowMobilenetTags.asObservable();
-
-  constructor(private tensorflowService: TensorflowService) {
+  /*  tensorflowMobilenetTags$ = this.tensorflowMobilenetTags.asObservable();
+   */
+  /* constructor(private tensorflowService: TensorflowService) {
     this.imgSrc$.subscribe((file) => {
       if (file) {
         console.log('📸 New Image Detected, Running Classification...');
@@ -34,7 +34,7 @@ export class ImageDataService {
         });
       }
     });
-  }
+  } */
 
   setImgFile(file: File) {
     this.imgFile.next(file);
@@ -54,9 +54,9 @@ export class ImageDataService {
     this.exifOriginal.next(exif);
   }
 
-  setTensorflowMobilenetTags(tags: string[]) {
+  /* setTensorflowMobilenetTags(tags: string[]) {
     this.tensorflowMobilenetTags.next(tags);
-  }
+  } */
 
   setMetaData(data: ImageMetadata) {
     this.metaData.next(data);

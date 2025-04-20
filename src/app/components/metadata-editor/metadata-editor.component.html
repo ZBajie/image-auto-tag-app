@@ -4,7 +4,15 @@
 
   <form [formGroup]="xmpForm" (ngSubmit)="saveMetadata()">
     <div class="form-group">
-      <label for="title">Title:</label>
+      <label for="title"
+        >Title:
+        <span
+          *ngIf="xmpForm.get('title')?.invalid && xmpForm.get('title')?.touched"
+          class="title-required"
+        >
+          Title is required.
+        </span></label
+      >
       <input
         id="title"
         type="text"
@@ -49,7 +57,11 @@
     <div class="button-container">
       <button type="button" (click)="addTag()">Add tag</button>
       <button type="button" (click)="autoTagImage()">Add auto tags</button>
-      <button type="submit" [disabled]="xmpForm.invalid">Save metadata</button>
+      @if (formSaved) {
+      <button type="submit">Metadata Saved</button>
+      }@else {
+      <button type="submit" class="button-save">Save metadata</button>
+      }
     </div>
   </form>
   <!-- <div class="button-container">
