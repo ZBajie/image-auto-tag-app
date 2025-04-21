@@ -1,0 +1,41 @@
+@use "../../../styles/mixins/mixin";
+@use "../../../styles/abstracts/_variables" as *;
+
+.info-section {
+  margin: $margin-secondary;
+  button {
+    @include mixin.button-round;
+    background-color: rgb(4, 162, 189);
+  }
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(234, 5, 74, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .modal {
+    background: whitesmoke;
+    padding: $padding-secondary;
+    border-radius: $border-radius-primary;
+    position: relative;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .close-btn {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.3rem;
+    background: red;
+    border: none;
+    font-size: 1.5rem;
+  }
+}

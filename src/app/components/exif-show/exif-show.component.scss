@@ -1,0 +1,5 @@
+@use "../../../styles/mixins/mixin";
+
+.exif-view-section {
+  @include mixin.card-primary;
+}

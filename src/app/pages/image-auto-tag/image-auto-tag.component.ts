@@ -6,6 +6,7 @@ import { MetadataEditorComponent } from '../../components/metadata-editor/metada
 import { ImageDownloadComponent } from '../../components/image-download/image-download.component';
 import { ImageDataService } from '../../services/image-data.service';
 import { TitleComponent } from '../../components/title/title.component';
+import { ImageAppInfoModalComponent } from '../../components/image-app-info-modal/image-app-info-modal.component';
 
 @Component({
   selector: 'app-image-auto-tag',
@@ -16,6 +17,7 @@ import { TitleComponent } from '../../components/title/title.component';
     MetadataEditorComponent,
     ImageDownloadComponent,
     TitleComponent,
+    ImageAppInfoModalComponent,
   ],
   templateUrl: './image-auto-tag.component.html',
   styleUrl: './image-auto-tag.component.scss',

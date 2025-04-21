@@ -1,29 +1,37 @@
 # ImageAutoTagApp
 
-An app to auto-tag images.
+Tag & Shrink
 
-# Work Items Pending
+This app helps you easily tag and shrink images for web use. It's designed to make preparing images for websites, blogs, and social media fast and simple.
+Features:
 
-- Style
-- browser-image-compression webP format
-- Read and remove EXIF data app
+    Upload an Image
 
-# Work items in progress
+    Start by uploading the image you want to process.
+    Edit Metadata
 
-- Image-auto-tag page
-- Tensorflow auto tag app
+    Fill in the metadata for the image. The title field is required.
+    Add Tags
 
-# Work Items Done
+    Click the Add Tag button to manually add tags to the image.
+    Auto-Generated Tags
 
-- Initiated Git and added .gitignore
-- Included sass in filesystem
-- Route to image-auto-tag page
-- Image uploading app
-- Image viewer app
-- angular material
-- Extract meta data from image
-- Manually edit XMP data
-- Image download app
+    Click the Add Auto Tag button to automatically generate tags for the image. This is powered by a TensorFlow model running directly in your browser. It’s not 100% accurate, but it respects your privacy as it operates locally.
+    Save Metadata
+
+    Click Save Metadata to store your changes.
+    Download Zip
+
+    Download a zip file containing the resized image and its metadata as JSON. The zip will include 3 images in different sizes: 400px, 800px, and 1600px—perfect for web use.
+    Download Resized Image
+
+    Click the Download Resized button to download the image resized to 600px.
+    Download Resized with Metadata
+
+    Download the resized image with metadata embedded as an XMP file by clicking Download Resized with Metadata.
+    Preset Resize Options
+
+    The default resize value is set to 600px but can be adjusted within the metadata editor.
 
 ## Angulars own setup notes
 

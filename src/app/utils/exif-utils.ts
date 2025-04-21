@@ -1,6 +1,8 @@
 import * as piexif from 'piexifjs';
 
-export async function readExifMetaData(imageFile: File) {
+export async function readExifMetaData(
+  imageFile: File
+): Promise<piexif.ExifDict | null> {
   const imageData64 = await convertFileToBase64(imageFile);
 
   try {
@@ -10,6 +12,10 @@ export async function readExifMetaData(imageFile: File) {
     }
 
     const exifData = piexif.load(imageData64);
+    delete exifData['thumbnail'];
+    delete exifData['1st']?.[513];
+    delete exifData['1st']?.[514];
+
     return exifData;
   } catch (error) {
     console.error('Error reading EXIF metadata:', error);
