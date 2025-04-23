@@ -6,6 +6,7 @@
   }
   button {
     @include mixin.button-round;
-    background-color: palevioletred;
+    background-color: red;
+    border-radius: 0 0 100px 100px;
   }
 }

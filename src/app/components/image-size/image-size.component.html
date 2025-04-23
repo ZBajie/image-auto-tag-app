@@ -1,0 +1,22 @@
+<section class="image-size-section">
+  <div>
+    <button
+      (click)="onSetSize(imageSize)"
+      [class.image-size-touched]="setSizeTouched"
+    >
+      <p>Set size</p>
+    </button>
+    <input
+      class="image-size-input"
+      type="number"
+      [(ngModel)]="imageSize"
+      (change)="onSetSizeChange()"
+      min="200"
+      max="1800"
+    />
+  </div>
+  @if (imageSizeControl) {
+
+  <span class="image-size-control">Set a value between 200px and 1800px</span>
+  }
+</section>

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { TensorflowService } from './tensorflow.service';
 import JSZip from 'jszip';
 import { writeXmpMetadata } from '../utils/xmp-utils';
 import { ExifDict } from 'piexifjs';
@@ -15,7 +14,7 @@ export class ImageDataService {
   private exifOriginal = new BehaviorSubject<ExifDict | null>(null);
   private metaData = new BehaviorSubject<ImageMetadata | null>(null);
   private metadataFormSaved = new BehaviorSubject<boolean>(true);
-  /* private tensorflowMobilenetTags = new BehaviorSubject<string[]>([]); */
+  private resizedWidth = new BehaviorSubject<number>(600);
 
   imgSrc$ = this.imgFile.asObservable();
   imageUrl$ = this.imageUrl.asObservable();
@@ -23,18 +22,7 @@ export class ImageDataService {
   exifOriginal$ = this.exifOriginal.asObservable();
   metaData$ = this.metaData.asObservable();
   metadataFormSaved$ = this.metadataFormSaved.asObservable();
-  /*  tensorflowMobilenetTags$ = this.tensorflowMobilenetTags.asObservable();
-   */
-  /* constructor(private tensorflowService: TensorflowService) {
-    this.imgSrc$.subscribe((file) => {
-      if (file) {
-        console.log('📸 New Image Detected, Running Classification...');
-        this.tensorflowService.getTensorflowMobilenetTags(file).then((tags) => {
-          this.setTensorflowMobilenetTags(tags);
-        });
-      }
-    });
-  } */
+  resizedWidth$ = this.resizedWidth.asObservable();
 
   setImgFile(file: File) {
     this.imgFile.next(file);
@@ -54,16 +42,16 @@ export class ImageDataService {
     this.exifOriginal.next(exif);
   }
 
-  /* setTensorflowMobilenetTags(tags: string[]) {
-    this.tensorflowMobilenetTags.next(tags);
-  } */
-
   setMetaData(data: ImageMetadata) {
     this.metaData.next(data);
   }
 
   setMetadataFormSaved(saved: boolean) {
     this.metadataFormSaved.next(saved);
+  }
+
+  setResizedWidth(width: number) {
+    this.resizedWidth.next(width);
   }
 
   getMetadataFormSaved(): boolean {
@@ -155,7 +143,8 @@ export class ImageDataService {
     });
   }
 
-  async downloadSingleResized(width: number) {
+  async downloadSingleResized() {
+    const width = this.resizedWidth.getValue();
     const file = this.imgFile.getValue();
     const metadata = this.metaData.getValue();
 
@@ -186,7 +175,9 @@ export class ImageDataService {
     URL.revokeObjectURL(a.href);
   }
 
-  async downloadSingleResizedWithXmp(width: number) {
+  async downloadSingleResizedWithXmp() {
+    const width = this.resizedWidth.getValue();
+
     const file = this.imgFile.getValue();
     const metadata = this.metaData.getValue();
 

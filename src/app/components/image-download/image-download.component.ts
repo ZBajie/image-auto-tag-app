@@ -26,12 +26,12 @@ export class ImageDownloadComponent {
       alert('Please save metadata first.');
     }
   }
-  onDownloadSingleRezized(width: number = 400) {
-    this.imageDataService.downloadSingleResized(width);
+  onDownloadSingleRezized() {
+    this.imageDataService.downloadSingleResized();
   }
-  onDownloadSingleRezizedXmp(width: number = 1600) {
+  onDownloadSingleRezizedXmp() {
     if (this.imageDataService.getMetadataFormSaved()) {
-      this.imageDataService.downloadSingleResizedWithXmp(width);
+      this.imageDataService.downloadSingleResizedWithXmp();
     } else {
       alert('Please save metadata first.');
     }

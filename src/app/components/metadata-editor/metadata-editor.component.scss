@@ -4,6 +4,7 @@
   /*  @include mixin.card-primary;
   background-color: aquamarine; */
   h2 {
+    background-color: rgba($color: #ffffff, $alpha: 0.5);
     margin-bottom: $margin-secondary;
   }
   button {
