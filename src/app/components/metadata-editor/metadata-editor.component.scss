@@ -6,6 +6,7 @@
   h2 {
     background-color: rgba($color: #ffffff, $alpha: 0.5);
     margin-bottom: $margin-secondary;
+    text-align: center;
   }
   button {
     @include mixin.button-primary;

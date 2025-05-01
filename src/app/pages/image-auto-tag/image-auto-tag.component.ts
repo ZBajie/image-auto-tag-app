@@ -2,9 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ImageViewComponent } from '../../components/image-view/image-view.component';
 import { MetadataEditorComponent } from '../../components/metadata-editor/metadata-editor.component';
-import { ImageDownloadComponent } from '../../components/image-download/image-download.component';
 import { ImageDataService } from '../../services/image-data.service';
-import { TitleComponent } from '../../components/title/title.component';
 import { ControlpanelComponent } from '../../components/controlpanel/controlpanel.component';
 
 @Component({
@@ -13,8 +11,6 @@ import { ControlpanelComponent } from '../../components/controlpanel/controlpane
     CommonModule,
     ImageViewComponent,
     MetadataEditorComponent,
-    ImageDownloadComponent,
-    TitleComponent,
     ControlpanelComponent,
   ],
   templateUrl: './image-auto-tag.component.html',

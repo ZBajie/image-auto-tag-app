@@ -15,7 +15,7 @@ export class ImageViewComponent {
 
   constructor(private imageDataService: ImageDataService) {
     this.imgSrc$ = this.imageDataService.imgSrc$.pipe(
-      map((file) => (file ? URL.createObjectURL(file) : null)) // Convert File to URL
+      map((file) => (file ? URL.createObjectURL(file) : null))
     );
   }
 }

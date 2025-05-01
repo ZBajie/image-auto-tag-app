@@ -1,9 +1,29 @@
 .controlpanel-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(220, 68, 122);
-  border-radius: 50%;
-  padding: 3rem;
+  .face {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(220, 68, 122);
+    border-radius: 50%;
+    padding: 3rem;
+  }
+
+  .hat {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform-origin: bottom center;
+    animation: wobble 4s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes wobble {
+  0% {
+    transform: rotate(-20deg);
+  }
+  100% {
+    transform: rotate(20deg);
+  }
 }

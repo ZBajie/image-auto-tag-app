@@ -1,4 +1,7 @@
 @use "../../../styles/mixins/mixin";
+@use "../../../styles/abstracts/_fonts" as *;
+@use "../../../styles/abstracts/_variables" as *;
+
 .image-upload-section {
   /*  @include mixin.card-primary; */
   .image-input {
@@ -6,6 +9,8 @@
   }
   button {
     @include mixin.button-round;
+    font-size: $font-size-secondary;
+    padding: $padding-secondary;
     background-color: red;
     border-radius: 0 0 100px 100px;
   }

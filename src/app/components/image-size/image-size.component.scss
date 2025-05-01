@@ -1,11 +1,12 @@
 @use "../../../styles/mixins/mixin";
 @use "../../../styles/abstracts/_variables" as *;
+@use "../../../styles/abstracts/_fonts" as *;
 
 .image-size-section {
-  margin: $margin-secondary;
   button {
     @include mixin.button-round;
-    width: 70px;
+    font-size: $font-size-secondary;
+    width: 80px;
     background-color: rgb(7, 139, 27);
   }
   .image-size-touched {
@@ -22,11 +23,12 @@
 
   .image-size-input {
     @include mixin.button-round;
-    width: 70px;
+    font-size: $font-size-secondary;
+    width: 80px;
     background-color: #bfec0a;
     color: black;
     padding: $padding-primary;
-    margin-left: $margin-primary;
+    margin-left: $margin-secondary;
     border-radius: 50%;
   }
 }

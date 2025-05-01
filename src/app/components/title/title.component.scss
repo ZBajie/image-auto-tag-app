@@ -1,3 +1,9 @@
+.title-container {
+  padding: 20px;
+  background-color: black;
+  border-radius: 10px;
+}
+
 .arc-text {
   display: flex;
   justify-content: center;
@@ -25,13 +31,13 @@
 
 @keyframes wobble {
   0% {
-    transform: rotate(-20deg);
+    transform: rotate(-10deg);
   }
   100% {
-    transform: rotate(20deg);
+    transform: rotate(10deg);
   }
 }
-@media screen and (max-width: 850px) {
+@media screen and (max-width: 1300px) {
   .arc-text {
     font-size: 3rem;
     letter-spacing: 0.05em;
@@ -43,6 +49,6 @@
     transform: rotate(-5deg);
   }
   100% {
-    transform: rotate(20deg);
+    transform: rotate(5deg);
   }
 }
