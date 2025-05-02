@@ -31,6 +31,11 @@ export class ImageUploadComponent {
         this.fileName = 'Max size is 4MB';
         return;
       }
+      this.imageDataService.setMetaData(null);
+      this.imageDataService.setMetadataFormSaved(true);
+      this.imageDataService.setResizedWidth(600);
+      this.imageDataService.setXmpOriginal(null);
+      this.imageDataService.setExifOriginal(null);
 
       this.fileName = file.name;
       this.selectedFile = file;

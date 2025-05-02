@@ -57,6 +57,10 @@
     <div class="button-container">
       <button type="button" (click)="addTag()">Add tag</button>
       <button type="button" (click)="autoTagImage()">Add auto tags</button>
+      <button type="button" (click)="onLoadLocalTags()">Load tags</button>
+    </div>
+    <div class="button-container">
+      <button type="button" (click)="onStoreLocalTags()">Store tags</button>
       @if (formSaved) {
       <button type="submit">Metadata Saved</button>
       }@else {
@@ -65,4 +69,17 @@
     </div>
   </form>
 </section>
+<div class="modal-overlay" *ngIf="showSaveTagModal">
+  <div class="modal">
+    <h5>This will overwrite existing saved tags</h5>
+    <div class="button-container">
+      <button class="button-proceed" (click)="onConfirmSaveTag()">
+        Proceed
+      </button>
+      <button class="button-cancel" (click)="onCloseSaveTagModal()">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
 }

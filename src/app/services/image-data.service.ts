@@ -34,15 +34,15 @@ export class ImageDataService {
     reader.readAsDataURL(file);
   }
 
-  setXmpOriginal(xmp: string) {
+  setXmpOriginal(xmp: string | null) {
     this.xmpOriginal.next(xmp);
   }
 
-  setExifOriginal(exif: ExifDict) {
+  setExifOriginal(exif: ExifDict | null) {
     this.exifOriginal.next(exif);
   }
 
-  setMetaData(data: ImageMetadata) {
+  setMetaData(data: ImageMetadata | null) {
     this.metaData.next(data);
   }
 
@@ -78,7 +78,7 @@ export class ImageDataService {
           .replace(/[^\w\-]/g, '')
       : defaultTitle;
 
-    const sizes = [400, 800, 1600];
+    const sizes = [320, 480, 768, 1024, 1280, 1600, 1920];
     const zip = new JSZip();
 
     zip.file('metadata.json', JSON.stringify(metadata, null, 2));

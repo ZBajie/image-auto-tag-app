@@ -20,6 +20,7 @@ import { TensorflowService } from '../../services/tensorflow.service';
 })
 export class MetadataEditorComponent implements OnInit {
   public formSaved = true;
+  public showSaveTagModal = false;
   private formBuilder = inject(FormBuilder);
   private imageDataService = inject(ImageDataService);
   private tensorFlowService = inject(TensorflowService);
@@ -34,6 +35,7 @@ export class MetadataEditorComponent implements OnInit {
     this.imageDataService.imgSrc$.subscribe((file) => {
       if (file) {
         this.imgFile = file;
+        this.resetForm();
         this.extractMetadata();
       }
     });
@@ -112,6 +114,16 @@ export class MetadataEditorComponent implements OnInit {
     }
   }
 
+  resetForm() {
+    this.xmpForm.reset({
+      title: '',
+      creator: '',
+      description: '',
+    });
+    this.tags.clear();
+    this.formSaved = true;
+  }
+
   get tags(): FormArray {
     return this.xmpForm.get('tags') as FormArray;
   }
@@ -157,5 +169,37 @@ export class MetadataEditorComponent implements OnInit {
     this.imageDataService.setMetaData(metadata);
     this.imageDataService.setMetadataFormSaved(true);
     this.formSaved = true;
+  }
+
+  onStoreLocalTags() {
+    this.showSaveTagModal = true;
+  }
+
+  onConfirmSaveTag() {
+    const tags = this.tags.controls
+      .map((tagControl) => tagControl.value)
+      .filter((tag: string) => tag.trim() !== '');
+    localStorage.setItem('tags', JSON.stringify(tags));
+    this.showSaveTagModal = false;
+  }
+  onCloseSaveTagModal() {
+    this.showSaveTagModal = false;
+  }
+
+  onLoadLocalTags() {
+    const tags = localStorage.getItem('tags');
+    if (tags) {
+      const parsedTags = JSON.parse(tags);
+      /* this.tags.clear(); */
+
+      const existingTags = this.tags.controls.map((item) =>
+        item.value.toLowerCase()
+      );
+      parsedTags.forEach((tag: string) => {
+        if (!existingTags.includes(tag.toLowerCase())) {
+          this.tags.push(this.formBuilder.control(tag));
+        }
+      });
+    }
   }
 }

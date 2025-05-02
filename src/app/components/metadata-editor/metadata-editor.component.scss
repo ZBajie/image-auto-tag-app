@@ -1,5 +1,7 @@
 @use "../../../styles/mixins/mixin";
 @use "../../../styles/abstracts/_variables" as *;
+@use "../../../styles/abstracts/_fonts" as *;
+
 .metadata-editor-section {
   /*  @include mixin.card-primary;
   background-color: aquamarine; */
@@ -46,4 +48,38 @@
     flex-direction: row;
     justify-content: space-between;
   }
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  @include mixin.card-primary;
+  background-color: blue;
+  font-size: $font-size-tertiary;
+  h5 {
+    margin-bottom: $margin-secondary;
+  }
+  .button-proceed {
+    @include mixin.button-primary;
+    font-size: $font-size-tertiary;
+    margin-right: $margin-secondary;
+    background-color: rgb(18, 235, 15);
+  }
+  .button-cancel {
+    @include mixin.button-primary;
+    font-size: $font-size-tertiary;
+    margin-left: $margin-secondary;
+    background-color: rgb(246, 120, 10);
+  }
+  z-index: 1001;
 }
