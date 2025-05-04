@@ -39,7 +39,6 @@ export class TensorflowService {
       image.onload = async () => {
         const predictions = await this.model!.classify(image);
         const tags = predictions.map((p) => p.className);
-        console.log('Predicted Tags:', tags);
         resolve(tags);
       };
     });

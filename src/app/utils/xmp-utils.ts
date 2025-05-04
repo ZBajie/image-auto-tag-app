@@ -17,7 +17,6 @@ export async function readXmpMetaData(imageFile: File): Promise<string | null> {
         const extractedXmp = binaryString.substring(xmpStart, xmpEnd + 12);
         resolve(extractedXmp);
       } else {
-        console.warn('No XMP metadata found.');
         resolve(null);
       }
     };

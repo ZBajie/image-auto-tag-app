@@ -67,14 +67,12 @@ export class MetadataEditorComponent implements OnInit {
 
   initFormData() {
     if (!this.xmpDataJson || !this.xmpDataJson['x:xmpmeta']) {
-      console.warn('XMP metadata is missing.');
       return;
     }
 
     const xmpDescription =
       this.xmpDataJson['x:xmpmeta']['rdf:RDF']['rdf:Description'];
     if (!xmpDescription) {
-      console.warn('XMP description is missing.');
       return;
     }
 

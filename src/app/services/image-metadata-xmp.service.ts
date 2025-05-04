@@ -50,11 +50,9 @@ export class ImageMetadataXmpService {
   }
 
   async writeXmpMetadata(imgFile: File | null): Promise<Blob> {
-    console.log('run write xmp data');
     if (!this.imgFile || !this.metaData) {
       throw new Error('Image file or metadata not available.');
     }
-    console.log('xmp service metadata', this.metaData);
 
     const imageFile = this.imgFile;
 

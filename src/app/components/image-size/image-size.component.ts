@@ -34,11 +34,8 @@ export class ImageSizeComponent {
     }
     this.imageDataService.setResizedWidth(size);
     this.setSizeTouched = false;
-    console.log('onclick', this.setSizeTouched);
   }
   onSetSizeChange() {
-    console.log(this.setSizeTouched);
     this.setSizeTouched = true;
-    console.log(this.setSizeTouched);
   }
 }
