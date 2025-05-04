@@ -33,6 +33,13 @@ Features:
 
     The default resize value is set to 600px but can be adjusted within the metadata editor.
 
+# Code
+
+Its an all frontend app made in angular.
+The image analysing tools is not so strong because of that. If the app will be used with a backend present, it would be better to move that to the backend. It should not be so hard to integrate that to the existing code for show and handle the data.
+
+Its an exam project. There is some services and components in the code thats not used in the final output. I will not remove them because maybe someone wants to use it later.
+
 ## Angulars own setup notes
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.5.
