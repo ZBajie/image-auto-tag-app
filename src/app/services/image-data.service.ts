@@ -80,6 +80,7 @@ export class ImageDataService {
 
     const sizes = [320, 480, 768, 1024, 1280, 1600, 1920];
     const zip = new JSZip();
+    const srcset = [];
 
     zip.file('metadata.json', JSON.stringify(metadata, null, 2));
 
@@ -106,9 +107,18 @@ export class ImageDataService {
         );
       });
 
-      zip.file(`${safeTitle}-${width}.jpg`, blob);
+      /* zip.file(`${safeTitle}-${width}.jpg`, blob); */
+      const filename = `${safeTitle}-${width}.jpg`;
+      zip.file(filename, blob);
+
+      srcset.push({ url: filename, width });
     }
 
+    const metadataWithSrcset = {
+      ...metadata,
+      srcset,
+    };
+    zip.file('metadata.json', JSON.stringify(metadataWithSrcset, null, 2));
     const zipBlob = await zip.generateAsync({ type: 'blob' });
 
     const a = document.createElement('a');
