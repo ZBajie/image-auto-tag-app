@@ -25,7 +25,7 @@ export class ImageSizeComponent {
   }
 
   onSetSize(size: number = 600) {
-    if (size < 200 || size > 1800) {
+    if (size < 200 || size > 2000) {
       this.imageSizeControl = true;
       setTimeout(() => {
         this.imageSizeControl = false;
